@@ -1,0 +1,50 @@
+class Solution {
+    public static String helper(String s)
+    {
+        char ch[]=s.toCharArray();
+        int i=0;
+        int j=ch.length-1;
+        while(i<j)
+        {
+            char c=ch[i];
+            ch[i]=ch[j];
+            ch[j]=c;
+            i++;
+            j--;
+        }
+        StringBuilder sb=new StringBuilder();
+        for(int k=0;k<ch.length;k++)
+        {
+            sb.append(ch[k]);
+        }
+        return sb.toString();
+    }
+    public String makeGood(String s) {
+        Stack<Character>st=new Stack<>();
+        st.push(s.charAt(0));
+        for(int i=1;i<s.length();i++)
+        {
+            char ch=s.charAt(i);
+        
+    if(!st.isEmpty()&& Math.abs(ch - st.peek()) == 32)
+            {
+                st.pop();
+            }else{
+            st.push(ch);
+        }
+        
+    }
+
+    String temp="";
+    while(!st.isEmpty())
+    {
+        char c=st.pop();
+        temp=temp+c;
+    }
+     String ans= helper(temp);
+     return ans;
+
+
+
+}
+}
