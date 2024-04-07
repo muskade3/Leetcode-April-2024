@@ -1,0 +1,39 @@
+class Solution {
+    public boolean helper(int idx,int open,String s,int[][]dp)
+    {
+        if(idx==s.length())
+        {
+            return (open==0);
+            
+        }
+        if(dp[idx][open]!=-1)
+        {
+            return dp[idx][open]==1;
+        }
+        boolean ans=false;
+          if (s.charAt(idx) == '*') {
+            ans |= helper(idx + 1, open + 1, s, dp);
+            if (open > 0) {
+                ans |= helper(idx + 1, open - 1, s, dp);
+            }
+            ans|= helper(idx + 1, open, s, dp);
+        } else {
+            if (s.charAt(idx) == '(') {
+                ans = helper(idx + 1, open + 1, s, dp);
+            } else if (open > 0) {
+                ans= helper(idx + 1, open - 1, s,dp);
+            }
+        }
+        dp[idx][open] = ans ? 1 : 0;
+        return ans;
+    }
+    public boolean checkValidString(String s) {
+        int n=s.length();
+        int[][]dp=new int[n+1][n+1];
+        for(int[]temp:dp)
+        {
+            Arrays.fill(temp,-1);
+        }
+        return helper(0,0,s,dp);
+    }
+}
