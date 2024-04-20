@@ -1,0 +1,57 @@
+class Solution {
+    int row2;
+    int col2;
+    public void helper(int[][]land,int i,int j,int m ,int n)
+    {
+    if(i<0||i>=m||j<0||j>=n||land[i][j]!=1)
+    {  
+    return;
+    }
+    row2=Math.max(row2,i);
+    col2=Math.max(col2,j);
+    land[i][j]=0;
+    helper(land,i-1,j,m,n);
+    helper(land,i+1,j,m,n);
+    helper(land,i,j-1,m,n);
+    helper(land,i,j+1,m,n);
+
+    }
+    public int[][] findFarmland(int[][] land) {
+        ArrayList<ArrayList<Integer>>l=new ArrayList<>();
+        int m=land.length;
+        int n=land[0].length;
+        for(int i=0;i<m;i++)
+        {
+            for(int j=0;j<n;j++)
+            {
+                ArrayList<Integer>temp=new ArrayList<>();
+                if(land[i][j]==1)
+                {
+                    int r1=i;
+                    int c1=j;
+                    row2=0;
+                    col2=0;
+                 helper(land,i,j,m,n);
+                    temp.add(r1);
+                    temp.add(c1);
+                    temp.add(row2);
+                    temp.add(col2);
+                }
+                if(temp.size()!=0)
+                l.add(temp);
+              
+            }
+        }
+        int[][]ans=new int[l.size()][4];
+        for(int i=0;i<l.size();i++)
+        {
+            ans[i][0]=l.get(i).get(0);
+            ans[i][1]=l.get(i).get(1);
+            ans[i][2]=l.get(i).get(2);
+            ans[i][3]=l.get(i).get(3);
+        }
+        return ans;
+      
+        
+    }
+}
