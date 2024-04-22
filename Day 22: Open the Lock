@@ -1,0 +1,59 @@
+class Solution {
+    public void  fillNeighbors(Queue<String>q,StringBuilder curr, Set<String>dead)
+    {
+        for(int i=0;i<4;i++)
+        {
+            char ch=curr.charAt(i);
+            char dec= (ch=='0')?'9':(char)(ch-1);
+            char inc= (ch=='9')?'0':(char)(ch+1);
+        curr.setCharAt(i,dec);
+        String decstring=curr.toString();
+        if(!dead.contains(decstring))
+        {
+            dead.add(decstring);
+            q.add(decstring);
+        }
+        curr.setCharAt(i,inc);
+        String incstring=curr.toString();
+        if(!dead.contains(incstring))
+        {
+            dead.add(incstring);
+            q.add(incstring);
+        }
+         curr.setCharAt(i,ch);
+
+
+        }
+    }
+    public int openLock(String[] deadends, String target) {
+        Set<String>dead=new HashSet<>();
+        for(int i=0;i<deadends.length;i++)
+        {
+            dead.add(deadends[i]);
+        }
+        String start="0000";
+        if(dead.contains(start))
+        {
+            return -1;
+        }
+        Queue<String>q=new LinkedList<>();
+        q.add(start);
+        int level=0;
+        while(!q.isEmpty())
+        {
+            int n=q.size();
+            while(n-->0)
+            {
+                String curr=q.poll();
+                if(curr.equals(target))
+                {
+                    return level;
+                }
+                StringBuilder currbuild=new StringBuilder(curr);
+                fillNeighbors(q,currbuild,dead);
+            }
+            level++;
+        }
+        return -1;
+    }
+}
