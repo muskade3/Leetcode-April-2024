@@ -1,0 +1,38 @@
+class Solution {
+    public static int count(int ringindex,int keyindex,int len)
+    {
+        int distance=Math.abs(ringindex-keyindex);
+        int wrapup=len-distance;
+        return Math.min(distance,wrapup);
+    }
+    public static int helper(int ringindex,int keyindex,String ring,String key,int[][]dp)
+    {
+        int result=Integer.MAX_VALUE;
+        if(keyindex>=key.length())
+        {
+            return 0;
+        }
+        if(dp[ringindex][keyindex]!=-1)
+        {
+            return dp[ringindex][keyindex];
+        }
+        for(int i=0;i<ring.length();i++)
+        {
+            if(ring.charAt(i)==key.charAt(keyindex))
+            {
+               int  steps= 1+count(ringindex,i,ring.length());
+       int totalsteps=steps+helper(i,keyindex+1,ring,key,dp);
+       result=Math.min(result,totalsteps);
+            }
+        }
+        return dp[ringindex][keyindex]=result;
+    }
+    public int findRotateSteps(String ring, String key) {
+        int [][]dp=new int[ring.length()+1][key.length()+1];
+        for(int i=0;i<dp.length;i++)
+        {
+            Arrays.fill(dp[i],-1);
+        }
+        return helper(0,0,ring ,key,dp);
+    }
+}
